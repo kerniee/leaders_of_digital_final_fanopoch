@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block title %}<title>Local Library</title>{% endblock %}
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/style.css' %}">
+</head>
+
+<body>
+{#<nav>#}
+{#    <button data-drawer-trigger=""#}
+{#       aria-controls="drawer-name" aria-expanded="false"#}
+{#       class="">#}
+{#</nav>#}
+
+<nav class="navbar navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
+            aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</nav>
+
+{% block sidebar %}<!-- insert default navigation text for every page -->{% endblock %}
+{% block content %}<!-- default content text (typically empty) -->{% endblock %}
+<script src="{% static 'main/js/bootstrap.js' %}"></script>
+<script src="{% static 'main/js/drawer.js' %}"></script>
+</body>
+<footer>
+    <nav class="navbar fixed-bottom navbar-light bg-light" style="min-height: 150px">
+        <button class="btn btn-default navbar-btn">Link</button>
+        <button class="btn btn-default navbar-btn">Link</button>
+        <button class="btn btn-default navbar-btn">Link</button>
+    </nav>
+</footer>
+</html>
