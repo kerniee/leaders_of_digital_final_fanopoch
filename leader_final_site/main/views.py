@@ -7,8 +7,9 @@ from django.views.generic import ListView, CreateView, DetailView
 from django_filters.views import FilterView
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as django_login
+from groups_manager.models import Member
 
-from main.models import Card, CardType, Worker
+from main.models import Card, CardType
 
 
 def render(*args, **kwargs):
@@ -126,10 +127,15 @@ class CardsCreateView(CreateView):
 
     def form_valid(self, form):
         card = form.save(commit=False)
-        card.creator = Worker.objects.filter(django_user=self.request.user).first()
+        card.creator = Member.objects.filter(django_user=self.request.user).first()
         card.save()
         return redirect('cards')
 
 
 class CardDetailView(DetailView):
     model = Card
+
+    def get_object(self, *args, **kwargs):
+        obj = super().get_object(*args, **kwargs)
+        obj.views.add(Member.objects.filter(django_user=self.request.user).first())
+        return obj
