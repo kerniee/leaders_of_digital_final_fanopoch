@@ -135,7 +135,7 @@ class CardsCreateView(CreateView, LoginRequiredMixin):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         # Add in a QuerySet of all the books
-        context['data'] = get_down_menu_data()
+        context['data'] = get_down_menu_data(self.request)
         return context
 
     def form_valid(self, form):
