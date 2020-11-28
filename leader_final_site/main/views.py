@@ -140,3 +140,8 @@ class CardDetailView(DetailView):
         # Add in a QuerySet of all the books
         context['data'] = get_down_menu_data()
         return context
+
+    def get_object(self, *args, **kwargs):
+        obj = super().get_object(*args, **kwargs)
+        obj.views.add(Worker.objects.filter(django_user=self.request.user).first())
+        return obj
