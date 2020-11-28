@@ -22,6 +22,7 @@ def render(*args, **kwargs):
 
 
 def get_down_menu_data():
+
     data = [
         ("Заявки", "requests", 22),
         ("Сообщения", "messages", 0),
@@ -70,7 +71,6 @@ def process_login(request):
         return redirect("index")
     else:
         return redirect("login")
-
 
 
 class CardsFilter(django_filters.FilterSet):
