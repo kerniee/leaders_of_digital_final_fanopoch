@@ -39,6 +39,9 @@ class Card(models.Model):
                                 related_name='my_cards', related_query_name='my_card')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
 
+    views = models.ManyToManyField(User, related_name='users_viewed', related_query_name='user_viewed',
+                                   verbose_name='Просмотрено?')
+
     to_users = models.ManyToManyField(User, related_name='assigned_cards', related_query_name='assigned_card')
     to_groups = models.ManyToManyField(ConjunctiveGroup)
 
