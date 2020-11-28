@@ -8,10 +8,10 @@
     {% load formadmin_filters %}
     <div class="content">
         <div class="row">
-            <form class="form col" action="/cards/new" method="post">
+            <form action="#" method="post">
                 {% csrf_token %}
                 {{ form | as_django_admin }}
-                <input type="submit">
+                <input type="submit" value="Сохранить">
             </form>
         </div>
     </div>

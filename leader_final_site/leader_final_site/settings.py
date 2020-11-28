@@ -145,4 +145,8 @@ GROUPS_MANAGER = {
         'groups_downstream': ['view'],
         'groups_siblings': [],
     },
+    'GROUP_NAME_PREFIX': 'DGM_',
+    'GROUP_NAME_SUFFIX': '_$$random',
+    'USER_USERNAME_PREFIX': '',
+    'USER_USERNAME_SUFFIX': '',
 }

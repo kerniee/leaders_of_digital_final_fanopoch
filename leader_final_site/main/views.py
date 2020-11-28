@@ -1,12 +1,14 @@
 import django_filters
 from django.shortcuts import render as django_render, redirect
 from django.http import HttpResponse
+from django.shortcuts import render as django_render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView, CreateView
 from django_filters.views import FilterView
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as django_login
 
-from main.models import Card, CardType
+from main.models import Card, CardType, Worker
 
 
 def render(*args, **kwargs):
@@ -123,19 +125,8 @@ class CardsCreateView(CreateView):
         context['data'] = get_down_menu_data()
         return context
 
-
-def process_new_card(request):
-    try:
-        card_type = CardType.objects.get(request.POST["type"])
-    except:
-        view = CardsCreateView.as_view()
-        return view
-    d = {
-        "header": request.POST["header"],
-        "cls": request.POST["cls"],
-        "type": card_type,
-        "priority": request.POST["priority"],
-        "deadline": request.POST["deadline"]
-    }
-    Card(**d)
-    return redirect("index")
+    def form_valid(self, form):
+        card = form.save(commit=False)
+        card.creator = Worker.objects.filter(django_user=self.request.user).first()
+        card.save()
+        return redirect('cards')
