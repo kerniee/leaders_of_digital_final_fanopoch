@@ -10,7 +10,8 @@ urlpatterns = [
     path("messages/", views.messages, name="messages"),
     path("missions/", views.missions, name="missions"),
     path("login/", views.login, name="login"),
+    path("logout/", views.logout_process, name="logout_process"),
     path("login/process", views.process_login, name="process_login"),
     path("cards/new", CardsCreateView.as_view(), name="new_card"),
-    path("cards/new/process", views.process_new_card, name="process_new_card")
+    path("cards/new/process", views.process_new_card, name="process_new_card"),
 ]

@@ -23,16 +23,19 @@
     <div class="drawer__wrapper">
         <div class="drawer__header">
             <div class="drawer__title">
-                Header Title
+                Меню
             </div>
             <button class="drawer__close" data-drawer-close="" aria-label="Close Drawer"></button>
         </div>
         <div class="drawer__content">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem in aliquid nulla, sed veritatis, officiis
-                ea aut
-                natus quas voluptates perferendis ratione modi ab qui omnis cum labore alias eos.
-            </p>
+            <a href="/">Главная</a>
+            {% if user.is_authenticated %}
+                <a href="/logout">Выйти</a>
+            {% else %}
+                <a href="/login">Войти</a>
+            {% endif %}
+            <!-- TODO: check permissions to create cards-->
+            <a href="/cards/new">Создать новую задачу</a>
         </div>
     </div>
 </section>
@@ -46,17 +49,17 @@
 {% block js %} {% endblock %}
 
 {% block nav_bottom %}
-<div style="margin-bottom: 160px"></div>
-<nav class="navbar fixed-bottom navbar-light bg-light" style="min-height: 150px">
-    {% for name, url, counter in data %}
-        <div class="col-4">
-            <a href="/{{ url }}" class="btn btn-info btn-super-lg navbar-btn">{{ name }}</a>
-            {% if counter != 0 %}
-                <span class="counter counter-lg">{{ counter }}</span>
-            {% endif %}
-        </div>
-    {% endfor %}
-</nav>
+    <div style="margin-bottom: 160px"></div>
+    <nav class="navbar fixed-bottom navbar-light bg-light" style="min-height: 150px">
+        {% for name, url, counter in data %}
+            <div class="col-4">
+                <a href="/{{ url }}" class="btn btn-info btn-super-lg navbar-btn">{{ name }}</a>
+                {% if counter != 0 %}
+                    <span class="counter counter-lg">{{ counter }}</span>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </nav>
 {% endblock %}
 </body>
 </html>

@@ -71,6 +71,8 @@
 }
 
 .drawer__content {
+    display: flex;
+    flex-direction: column;
     position: relative;
     overflow-x: hidden;
     overflow-y: auto;
@@ -79,6 +81,15 @@
     /* Optional */
     padding: 1.5rem;
 }
+
+.drawer__content a {
+    font-size: 3rem;
+}
+
+.drawer__title {
+    font-size: 3rem;
+}
+
 
 .drawer--left .drawer__wrapper {
     left: 0;

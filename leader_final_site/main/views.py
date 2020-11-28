@@ -3,6 +3,8 @@ from django.shortcuts import render as django_render, redirect
 from django.http import HttpResponse
 from django.views.generic import ListView, CreateView
 from django_filters.views import FilterView
+from django.contrib.auth import authenticate, logout
+from django.contrib.auth import login as django_login
 
 from main.models import Card, CardType
 
@@ -52,9 +54,21 @@ def login(request):
     return django_render(request, "main/login.html", {"ip_address": "/"})
 
 
-def process_login(request):
-    pass  # TODO: login
+def logout_process(request):
+    logout(request)
     return redirect("index")
+
+
+def process_login(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        django_login(request, user)
+        return redirect("index")
+    else:
+        return redirect("login")
+
 
 
 class CardsFilter(django_filters.FilterSet):
@@ -98,6 +112,8 @@ class CardsCreateView(CreateView):
         'type',
         'priority',
         'deadline',
+        'to_users',
+        'to_groups'
     )
 
     def get_context_data(self, **kwargs):
