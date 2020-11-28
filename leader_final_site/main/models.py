@@ -1,19 +1,5 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
 from groups_manager.models import Group, Member
-
-
-class User(AbstractUser):
-    parent_name = models.CharField(max_length=255, verbose_name='Отчество', blank=True)
-
-
-class Worker(Member):
-    @property
-    def parent_name(self):
-        return self.django_user.parent_name
-
-    class Meta:
-        proxy = True
 
 
 class CardType(models.Model):
@@ -48,14 +34,14 @@ class Card(models.Model):
     is_finished = models.BooleanField(default=False, blank=True, verbose_name='Завершено?')
     finished_at = models.DateTimeField(blank=True, null=True, verbose_name='Фактический срок исполнения')
 
-    creator = models.ForeignKey(Worker, on_delete=models.CASCADE, verbose_name='Создатель', blank=True,
+    creator = models.ForeignKey(Member, on_delete=models.CASCADE, verbose_name='Создатель', blank=True,
                                 related_name='my_cards', related_query_name='my_card')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
 
-    views = models.ManyToManyField(Worker, related_name='cards_viewed', related_query_name='card_viewed',
+    views = models.ManyToManyField(Member, related_name='cards_viewed', related_query_name='card_viewed',
                                    verbose_name='Просмотрено?')
 
-    to_users = models.ManyToManyField(Worker, related_name='assigned_cards', related_query_name='assigned_card',
+    to_users = models.ManyToManyField(Member, related_name='assigned_cards', related_query_name='assigned_card',
                                       blank=True)
     to_groups = models.ManyToManyField(Group, related_name='assigned_cards',
                                        related_query_name='assigned_card',
@@ -75,5 +61,5 @@ class Reply(models.Model):
 
 
 class Attachment(models.Model):
-    reply = models.ForeignKey(Reply, on_delete=models.CASCADE)
+    reply = models.ForeignKey(Card, on_delete=models.CASCADE)
     file = models.FileField(upload_to='attachments')
