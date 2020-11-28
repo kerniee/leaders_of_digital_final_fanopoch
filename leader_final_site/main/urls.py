@@ -10,4 +10,5 @@ urlpatterns = [
     path("messages/", views.messages, name="messages"),
     path("missions/", views.missions, name="missions"),
     path("login/", views.login, name="login"),
+    path("login/process", views.process_login, name="process_login"),
 ]

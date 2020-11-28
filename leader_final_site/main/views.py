@@ -1,5 +1,5 @@
 import django_filters
-from django.shortcuts import render as django_render
+from django.shortcuts import render as django_render, redirect
 from django.http import HttpResponse
 from django.views.generic import ListView
 from django_filters.views import FilterView
@@ -49,7 +49,12 @@ def missions(request):
 
 
 def login(request):
-    return django_render(request, "main/login.html")
+    return django_render(request, "main/login.html", {"ip_address": "/"})
+
+
+def process_login(request):
+    pass  # TODO: login
+    return redirect("index")
 
 
 class CardsFilter(django_filters.FilterSet):

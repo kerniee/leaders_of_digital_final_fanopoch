@@ -7,11 +7,12 @@
 {% block content %}
     <div class="login_wrapper">
         <h1 class="login_title">Пожалуйста, войдите в систему</h1>
-        <form class="login">
+        <form class="login" action="/login/process" method="POST">
+            {% csrf_token %}
             <input type="text" id="inputTabelNumber" class="form-control" placeholder="Табельный номер" required="">
             <input type="password" id="inputPassword" class="form-control" placeholder="Пароль" required="">
-            <label class="align-self-center my-3">
-                <input type="checkbox" value="remember-me"> Запомнить на этом устройстве
+            <label class="checkbox-label align-self-center my-3">
+                <input class="checkbox" type="checkbox" value="remember-me"> Запомнить на этом устройстве
             </label>
             <button class="btn btn-lg btn-primary btn-block mt-5" type="submit">Войти</button>
         </form>

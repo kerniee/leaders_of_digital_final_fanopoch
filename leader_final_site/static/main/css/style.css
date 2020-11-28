@@ -60,9 +60,20 @@ body {
     flex-direction: column;
 }
 
-.login input {
+.login .form-control {
     font-size: 2rem;
     min-height: 80px;
+}
+
+.login .checkbox {
+    width: 35px;
+    height: 35px;
+    margin-right: 1rem;
+}
+
+.login .checkbox-label {
+    display: flex;
+    align-items: center;
 }
 
 .login button {
