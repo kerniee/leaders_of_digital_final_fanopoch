@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-from .views import CardsListView, CardsCreateView
+from .views import CardsListView, CardsCreateView, CardDetailView
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -13,4 +13,5 @@ urlpatterns = [
     path("logout/", views.logout_process, name="logout_process"),
     path("login/process", views.process_login, name="process_login"),
     path("cards/new", CardsCreateView.as_view(), name="new_card"),
+    path("cards/<int:pk>", CardDetailView.as_view(), name="detail")
 ]
