@@ -3,7 +3,7 @@ from django.shortcuts import render as django_render, redirect
 from django.http import HttpResponse
 from django.shortcuts import render as django_render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DetailView
 from django_filters.views import FilterView
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as django_login
@@ -72,7 +72,6 @@ def process_login(request):
         return redirect("login")
 
 
-
 class CardsFilter(django_filters.FilterSet):
     o = django_filters.OrderingFilter(
         fields=(
@@ -130,3 +129,7 @@ class CardsCreateView(CreateView):
         card.creator = Worker.objects.filter(django_user=self.request.user).first()
         card.save()
         return redirect('cards')
+
+
+class CardDetailView(DetailView):
+    model = Card
