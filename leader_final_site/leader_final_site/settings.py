@@ -148,3 +148,5 @@ GROUPS_MANAGER = {
     'USER_USERNAME_PREFIX': '',
     'USER_USERNAME_SUFFIX': '',
 }
+
+LOGIN_URL = '/login'

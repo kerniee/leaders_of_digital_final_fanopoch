@@ -1,30 +1,32 @@
 {% extends "base_generic.html" %}
-<div>
-
-</div>
 
 {% block content %}
     <div class="container">
         <div class="row">
-
-            <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
-                <button class="navbar-toggler mb-2" type="button" data-toggle="collapse"
-                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation" id="filterButton">
-                    <a class="btn">Фильтры</a>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <div class="col-12">
-                        <form method="get">
-                            {{ filter.form.as_p }}
-                            <input type="submit" value="Применить" class="mb-2"/>
-                            <select type="hidden" name="uncl" style="visibility: hidden">
-                                <option value="1"></option>
-                            </select>
-                        </form>
-                    </div>
+            <div class="col-12">
+                <a class="mb-2" data-toggle="collapse"
+                   data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                   aria-expanded="true" aria-label="Toggle navigation" id="filterButton">
+                    <span class="iconify" data-icon="carbon:filter" data-inline="false"></span>Фильтры
+                </a>
+                <a class="mb-2" href="{{ request.path }}">
+                    <span class="iconify" data-icon="carbon:filter-reset" data-inline="false"></span>Сбросить
+                </a>
+            </div>
+            <div class="col-12 collapse navbar-collapse {% if request.GET.uncl %}show{% endif %}"
+                 id="navbarSupportedContent">
+                <div class="col-12">
+                    <form method="get">
+                        {{ filter.form.as_p }}
+                        <input type="submit" value="Применить" class="mb-2 btn-primary"/>
+                        <select type="hidden" name="uncl" style="visibility: hidden">
+                            <option value="1"></option>
+                        </select>
+                    </form>
                 </div>
-            </nav>
+            </div>
+            {% if request.GET %}
+            {% endif %}
             {% for card in filter.qs %}
 
                 <a style="text-decoration:none;" href='/' class="col-md-12 mb-2">
@@ -45,6 +47,8 @@
                         </div>
                     </div>
                 </a>
+            {% empty %}
+                Пока что ничего не найдено.
             {% endfor %}
         </div>
 

@@ -1,4 +1,6 @@
 import django_filters
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render as django_render, redirect
 from django.http import HttpResponse
 from django.shortcuts import render as django_render, redirect
@@ -12,43 +14,53 @@ from groups_manager.models import Member
 from main.models import Card, CardType
 
 
-def render(*args, **kwargs):
-    if len(args) > 2:
-        args[2]["data"] = get_down_menu_data()
+def render(request, *args, **kwargs):
+    if len(args) > 1:
+        args[1]["data"] = get_down_menu_data(request)
     elif "context" in kwargs:
-        kwargs["context"]["data"] = get_down_menu_data()
+        kwargs["context"]["data"] = get_down_menu_data(request)
     else:
-        kwargs["context"] = {"data": get_down_menu_data()}
-    return django_render(*args, **kwargs)
+        kwargs["context"] = {"data": get_down_menu_data(request)}
+    return django_render(request, *args, **kwargs)
 
 
-def get_down_menu_data():
+def get_down_menu_data(request):
+    total_cards = Card.objects.filter(to_users__django_user=request.user) \
+                  | Card.objects.filter(to_groups__group_members__django_user=request.user)
+    viewed_cars = total_cards.filter(views__django_user=request.user)
     data = [
-        ("Заявки", "requests", 22),
-        ("Сообщения", "messages", 0),
-        ("Поручения", "missions", 2)
+        ("Заявки", "requests",
+         total_cards.filter(cls=1).count() - viewed_cars.filter(cls=1).count()),
+        ("Сообщения", "messages",
+         total_cards.filter(cls=2).count() - viewed_cars.filter(cls=2).count()),
+        ("Поручения", "missions",
+         total_cards.filter(cls=3).count() - viewed_cars.filter(cls=3).count())
     ]
     return data
 
 
+@login_required
 def index(request):
     return render(request, "main/index.html", context={})
 
 
+@login_required
 def requests(request):
-    cards = Card.objects.filter(type=1)
+    cards = Card.objects.filter(cls=1)
     f = CardsFilter(request.GET, queryset=cards)
     return render(request, "main/requests.html", {'filter': f})
 
 
+@login_required
 def messages(request):
-    cards = Card.objects.filter(type=2)
+    cards = Card.objects.filter(cls=2)
     f = CardsFilter(request.GET, queryset=cards)
     return render(request, "main/messages.html", {'filter': f})
 
 
+@login_required
 def missions(request):
-    cards = Card.objects.filter(type=3)
+    cards = Card.objects.filter(cls=3)
     f = CardsFilter(request.GET, queryset=cards)
     return render(request, "main/missions.html", {'filter': f})
 
@@ -57,6 +69,7 @@ def login(request):
     return django_render(request, "main/login.html", {"ip_address": "/"})
 
 
+@login_required
 def logout_process(request):
     logout(request)
     return redirect("index")
@@ -94,7 +107,7 @@ class CardsFilter(django_filters.FilterSet):
         fields = ['priority', 'creator', 'cls']
 
 
-class CardsListView(FilterView):
+class CardsListView(FilterView, LoginRequiredMixin):
     paginate_by = 10
     template_name = 'main/cards.html'
     context_object_name = 'cards'
@@ -106,7 +119,7 @@ class CardsListView(FilterView):
         return queryset
 
 
-class CardsCreateView(CreateView):
+class CardsCreateView(CreateView, LoginRequiredMixin):
     model = Card
     fields = (
         'header',
@@ -132,7 +145,7 @@ class CardsCreateView(CreateView):
         return redirect('cards')
 
 
-class CardDetailView(DetailView):
+class CardDetailView(DetailView, LoginRequiredMixin):
     model = Card
 
     def get_object(self, *args, **kwargs):
