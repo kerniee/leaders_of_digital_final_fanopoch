@@ -45,6 +45,7 @@
 <script src="{% static 'main/js/drawer.js' %}"></script>
 {% block js %} {% endblock %}
 
+{% block nav_bottom %}
 <div style="margin-bottom: 160px"></div>
 <nav class="navbar fixed-bottom navbar-light bg-light" style="min-height: 150px">
     {% for name, url, counter in data %}
@@ -56,5 +57,6 @@
         </div>
     {% endfor %}
 </nav>
+{% endblock %}
 </body>
 </html>

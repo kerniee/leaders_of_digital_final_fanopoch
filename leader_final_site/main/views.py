@@ -48,6 +48,10 @@ def missions(request):
     return render(request, "main/missions.html", {'filter': f})
 
 
+def login(request):
+    return django_render(request, "main/login.html")
+
+
 class CardsFilter(django_filters.FilterSet):
     o = django_filters.OrderingFilter(
         fields=(

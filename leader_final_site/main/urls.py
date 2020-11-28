@@ -9,4 +9,5 @@ urlpatterns = [
     path("requests/", views.requests, name="requests"),
     path("messages/", views.messages, name="messages"),
     path("missions/", views.missions, name="missions"),
+    path("login/", views.login, name="login"),
 ]
