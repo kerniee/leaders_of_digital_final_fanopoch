@@ -1,10 +1,10 @@
 import django_filters
 from django.shortcuts import render as django_render, redirect
 from django.http import HttpResponse
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView
 from django_filters.views import FilterView
 
-from main.models import Card
+from main.models import Card, CardType
 
 
 def render(*args, **kwargs):
@@ -84,3 +84,38 @@ class CardsListView(FilterView):
     model = Card
     context_object_name = 'cards'
     filterset_class = CardsFilter
+
+
+class CardsCreateView(CreateView):
+    model = Card
+    fields = (
+        'header',
+        'cls',
+        'type',
+        'priority',
+        'deadline',
+    )
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['data'] = get_down_menu_data()
+        return context
+
+
+def process_new_card(request):
+    try:
+        card_type = CardType.objects.get(request.POST["type"])
+    except:
+        view = CardsCreateView.as_view()
+        return view
+    d = {
+        "header": request.POST["header"],
+        "cls": request.POST["cls"],
+        "type": card_type,
+        "priority": request.POST["priority"],
+        "deadline": request.POST["deadline"]
+    }
+    Card(**d)
+    return redirect("index")

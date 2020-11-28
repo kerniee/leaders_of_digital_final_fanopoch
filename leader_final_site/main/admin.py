@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext, gettext_lazy as _
 
-from main.models import User, Card
+from main.models import User, Card, CardType
 
 
 @admin.register(User)
@@ -41,3 +41,6 @@ class CardAdmin(admin.ModelAdmin):
         'priority',
         'deadline'
     ]
+
+
+admin.site.register(CardType)

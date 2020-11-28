@@ -1,0 +1,18 @@
+{% extends "base_generic.html" %}
+
+{% block nav_title %}
+    Создать задачу
+{% endblock %}
+
+{% block content %}
+    {% load formadmin_filters %}
+    <div class="content">
+        <div class="row">
+            <form class="form col" action="/cards/new/process" method="post">
+                {% csrf_token %}
+                {{ form | as_django_admin }}
+                <input type="submit">
+            </form>
+        </div>
+    </div>
+{% endblock %}
