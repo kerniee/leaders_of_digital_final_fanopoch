@@ -1,37 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% block title %}<title>Local Library</title>{% endblock %}
+    {% block title %}<title>Task Manager</title>{% endblock %}
 
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/bootstrap.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/drawer.css' %}">
 </head>
 
 <body>
-{#<nav>#}
-{#    <button data-drawer-trigger=""#}
-{#       aria-controls="drawer-name" aria-expanded="false"#}
-{#       class="">#}
-{#</nav>#}
-
-<nav class="navbar navbar-light bg-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
-            aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-light bg-light" style="min-height: 150px">
+    <button class="navbar-toggler h-100" type="button" data-toggle="collapse" data-drawer-trigger
+            aria-controls="drawer-name" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
+    <span class="navbar-brand mb-0 h1">{% block nav_title %}{% endblock %}</span>
 </nav>
 
-{% block sidebar %}<!-- insert default navigation text for every page -->{% endblock %}
-{% block content %}<!-- default content text (typically empty) -->{% endblock %}
+<section class="drawer drawer--left" id="drawer-name" data-drawer-target="">
+    <div class="drawer__overlay" data-drawer-close="" tabindex="-1"></div>
+    <div class="drawer__wrapper">
+        <div class="drawer__header">
+            <div class="drawer__title">
+                Header Title
+            </div>
+            <button class="drawer__close" data-drawer-close="" aria-label="Close Drawer"></button>
+        </div>
+        <div class="drawer__content">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem in aliquid nulla, sed veritatis, officiis
+                ea aut
+                natus quas voluptates perferendis ratione modi ab qui omnis cum labore alias eos.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="mx-5" style="margin-top: 10px">
+    {% block content %}<!-- default content text (typically empty) -->{% endblock %}
+</div>
 <script src="{% static 'main/js/bootstrap.js' %}"></script>
 <script src="{% static 'main/js/drawer.js' %}"></script>
+
+<div style="margin-bottom: 160px"></div>
+<nav class="navbar fixed-bottom navbar-light bg-light" style="min-height: 150px">
+    {% for name, url, counter in data %}
+        <div class="col-4">
+            <a href="/{{ url }}" class="btn btn-info navbar-btn">{{ name }}</a>
+            {% if counter != 0 %}
+                <span class="counter counter-lg">{{ counter }}</span>
+            {% endif %}
+        </div>
+    {% endfor %}
+</nav>
 </body>
-<footer>
-    <nav class="navbar fixed-bottom navbar-light bg-light" style="min-height: 150px">
-        <button class="btn btn-default navbar-btn">Link</button>
-        <button class="btn btn-default navbar-btn">Link</button>
-        <button class="btn btn-default navbar-btn">Link</button>
-    </nav>
-</footer>
 </html>

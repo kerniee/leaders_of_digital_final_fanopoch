@@ -1,0 +1,20 @@
+{% extends "base_generic.html" %}
+
+{% block nav_title %}
+    Ваши заявки
+{% endblock %}
+
+{% block content %}
+    {% for i in "aaaa" %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Тайтл с названием таски</h2>
+            <p class="card-text">Краткое описание таска или дргуая инфа</p>
+            <div class="row">
+                <p class="col">2020-02-15 14:21</p>
+                <p class="col">2020-02-16 12:00</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}
