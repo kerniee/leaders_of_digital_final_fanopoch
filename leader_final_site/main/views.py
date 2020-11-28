@@ -123,7 +123,6 @@ class CardsCreateView(CreateView, LoginRequiredMixin):
     model = Card
     fields = (
         'header',
-        'cls',
         'type',
         'priority',
         'deadline',
