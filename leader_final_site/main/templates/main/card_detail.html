@@ -1,4 +1,24 @@
 {% extends "base_generic.html" %}
 {% block content %}
-    {{ card }}
+    <div class="form-row">
+        <label class="form-row"><b>Заголовок: </b> {{ card.header }}</label>
+    </div>
+    <div class="form-row">
+        <label class="form-row"><b>Класс поручения: </b> {{ card.cls }}</label>
+    </div>
+    <div class="form-row">
+        <label class="form-row"><b>Тип поручения: </b> {{ card.type }}</label>
+    </div>
+    <div class="form-row">
+        <label class="form-row"><b>Приоритет: </b> {{ card.priority }}</label>
+    </div>
+    <div class="form-row">
+        <label class="form-row"><b>Срок исполнения: </b> {{ card.deadline }}</label>
+    </div>
+    <div class="form-row">
+        <label class="form-row"><b>Создатель: </b> {{ card.creator }}</label>
+    </div>
+    <div class="form-row">
+        <label class="form-row"><b>Время создания: </b> {{ card.created_at }}</label>
+    </div>
 {% endblock %}

@@ -53,6 +53,14 @@ body {
     padding: 1.5rem 0;
 }
 
+.form-row {
+    font-size: 2.5rem;
+}
+
+.form-row b {
+    padding-right: 1rem;
+}
+
 .login {
     width: 70%;
     max-width: 800px;

@@ -22,9 +22,8 @@ def render(*args, **kwargs):
 
 
 def get_down_menu_data():
-
     data = [
-        ("Заявки", "requests", 22),
+        ("Обязанности", "requests", 22),
         ("Сообщения", "messages", 0),
         ("Поручения", "missions", 2)
     ]
@@ -134,3 +133,10 @@ class CardsCreateView(CreateView):
 
 class CardDetailView(DetailView):
     model = Card
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['data'] = get_down_menu_data()
+        return context

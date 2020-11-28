@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block nav_title %}
-    Здравствуйте, {% if user.is_authenticated %}{{ user.username }}{% else %}Гость{% endif %}!
+    Здравствуйте, {% if user.is_authenticated %}{{ user.first_name }}{% else %}Гость{% endif %}!
 {% endblock %}
 
 {% block content %}
