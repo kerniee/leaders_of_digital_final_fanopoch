@@ -133,3 +133,8 @@ class CardsCreateView(CreateView):
 
 class CardDetailView(DetailView):
     model = Card
+
+    def get_object(self, *args, **kwargs):
+        obj = super().get_object(*args, **kwargs)
+        obj.views.add(Worker.objects.filter(django_user=self.request.user).first())
+        return obj
