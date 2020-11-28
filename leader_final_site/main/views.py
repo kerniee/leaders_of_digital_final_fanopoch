@@ -80,6 +80,10 @@ class CardsListView(FilterView):
     context_object_name = 'cards'
     filterset_class = CardsFilter
 
+    def get_queryset(self):
+        queryset = Card.objects.where(to_users__contains=self.request.user)
+        self.request.user
+
 
 class CardsCreateView(CreateView):
     model = Card
