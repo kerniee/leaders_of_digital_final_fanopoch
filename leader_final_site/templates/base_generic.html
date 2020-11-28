@@ -40,14 +40,16 @@
 <div class="mx-5" style="margin-top: 10px">
     {% block content %}<!-- default content text (typically empty) -->{% endblock %}
 </div>
+<script src="{% static 'main/js/jquery-3.5.1.min.js' %}"></script>
 <script src="{% static 'main/js/bootstrap.js' %}"></script>
 <script src="{% static 'main/js/drawer.js' %}"></script>
+{% block js %} {% endblock %}
 
 <div style="margin-bottom: 160px"></div>
 <nav class="navbar fixed-bottom navbar-light bg-light" style="min-height: 150px">
     {% for name, url, counter in data %}
         <div class="col-4">
-            <a href="/{{ url }}" class="btn btn-info navbar-btn">{{ name }}</a>
+            <a href="/{{ url }}" class="btn btn-info btn-super-lg navbar-btn">{{ name }}</a>
             {% if counter != 0 %}
                 <span class="counter counter-lg">{{ counter }}</span>
             {% endif %}
