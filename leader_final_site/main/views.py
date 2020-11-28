@@ -81,9 +81,13 @@ class CardsFilter(django_filters.FilterSet):
 class CardsListView(FilterView):
     paginate_by = 10
     template_name = 'main/cards.html'
-    model = Card
     context_object_name = 'cards'
     filterset_class = CardsFilter
+
+    def get_queryset(self):
+        queryset = Card.objects.filter(to_users__django_user=self.request.user) \
+                   | Card.objects.filter(to_groups__group_members__django_user=self.request.user)
+        return queryset
 
 
 class CardsCreateView(CreateView):

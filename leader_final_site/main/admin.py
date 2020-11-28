@@ -5,6 +5,12 @@ from django.utils.translation import gettext, gettext_lazy as _
 from main.models import User, Card, CardType
 
 
+@admin.register(CardType)
+class CardTypeAdmin(admin.ModelAdmin):
+    fields = ['name']
+    list_display = ['name']
+
+
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     fieldsets = (
@@ -41,6 +47,3 @@ class CardAdmin(admin.ModelAdmin):
         'priority',
         'deadline'
     ]
-
-
-admin.site.register(CardType)

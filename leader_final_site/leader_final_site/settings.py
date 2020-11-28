@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'formadmin',
+    'groups_manager',
+    'guardian',
     'main'
 ]
 
@@ -129,6 +131,18 @@ MEDIA_ROOT = path.join(BASE_DIR, 'media')
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend'
 ]
 
 AUTH_USER_MODEL = 'main.User'
+
+GROUPS_MANAGER = {
+    'AUTH_MODELS_SYNC': True,
+    'PERMISSIONS': {
+        'owner': ['view', 'change', 'delete'],
+        'group': ['view'],
+        'groups_upstream': [],
+        'groups_downstream': ['view'],
+        'groups_siblings': [],
+    },
+}
