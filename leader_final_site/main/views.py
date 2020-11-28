@@ -1,10 +1,10 @@
 import django_filters
-from django.shortcuts import render as django_render
-from django.http import HttpResponse
+from django.shortcuts import render as django_render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView, CreateView
 from django_filters.views import FilterView
 
-from main.models import Card
+from main.models import Card, Worker
 
 
 def render(*args, **kwargs):
@@ -96,3 +96,9 @@ class CardsCreateView(CreateView):
         'to_users',
         'to_groups'
     )
+
+    def form_valid(self, form):
+        card = form.save(commit=False)
+        card.creator = Worker.objects.filter(django_user=self.request.user).first()
+        card.save()
+        return redirect('cards')

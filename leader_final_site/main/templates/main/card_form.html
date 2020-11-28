@@ -3,11 +3,11 @@
     {% load formadmin_filters %}
     <div class="content">
         <div class="row">
-            <div class="form">
+            <form action="#" method="post">
                 {% csrf_token %}
                 {{ form | as_django_admin }}
                 <input type="submit" value="Сохранить">
-            </div>
+            </form>
         </div>
     </div>
 {% endblock %}
