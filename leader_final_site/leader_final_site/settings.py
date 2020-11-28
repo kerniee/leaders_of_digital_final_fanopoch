@@ -138,4 +138,11 @@ AUTH_USER_MODEL = 'main.User'
 
 GROUPS_MANAGER = {
     'AUTH_MODELS_SYNC': True,
+    'PERMISSIONS': {
+        'owner': ['view', 'change', 'delete'],
+        'group': ['view'],
+        'groups_upstream': [],
+        'groups_downstream': ['view'],
+        'groups_siblings': [],
+    },
 }

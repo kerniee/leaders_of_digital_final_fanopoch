@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from groups_manager.models import Group
+from groups_manager.models import Group, Member
 
 
 class User(AbstractUser):
@@ -9,6 +9,13 @@ class User(AbstractUser):
 
 class CardType(models.Model):
     name = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = 'Тип карточек'
+        verbose_name_plural = 'Типы карточек'
+
+    def __str__(self):
+        return self.name
 
 
 class Card(models.Model):
@@ -39,7 +46,7 @@ class Card(models.Model):
     views = models.ManyToManyField(User, related_name='cards_viewed', related_query_name='card_viewed',
                                    verbose_name='Просмотрено?')
 
-    to_users = models.ManyToManyField(User, related_name='assigned_cards', related_query_name='assigned_card',
+    to_users = models.ManyToManyField(Member, related_name='assigned_cards', related_query_name='assigned_card',
                                       blank=True)
     to_groups = models.ManyToManyField(Group, related_name='assigned_cards',
                                        related_query_name='assigned_card',
