@@ -1,7 +1,7 @@
 import django_filters
 from django.shortcuts import render as django_render
 from django.http import HttpResponse
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView
 from django_filters.views import FilterView
 
 from main.models import Card
@@ -79,3 +79,16 @@ class CardsListView(FilterView):
     model = Card
     context_object_name = 'cards'
     filterset_class = CardsFilter
+
+
+class CardsCreateView(CreateView):
+    model = Card
+    fields = (
+        'header',
+        'cls',
+        'type',
+        'priority',
+        'deadline',
+        'to_users',
+        'to_groups'
+    )

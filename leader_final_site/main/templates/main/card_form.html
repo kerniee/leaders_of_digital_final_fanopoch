@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+    {% load formadmin_filters %}
+    <div class="content">
+        <div class="row">
+            <div class="form">
+                {% csrf_token %}
+                {{ form | as_django_admin }}
+                <input type="submit" value="Сохранить">
+            </div>
+        </div>
+    </div>
+{% endblock %}
