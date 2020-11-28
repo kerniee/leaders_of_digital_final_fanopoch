@@ -38,10 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters',
-    'formadmin',
     'groups_manager',
     'guardian',
-    'main'
+    'main',
+    'django_forms_bootstrap'
 ]
 
 MIDDLEWARE = [

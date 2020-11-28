@@ -30,7 +30,7 @@ class Card(models.Model):
     type = models.ForeignKey(CardType, on_delete=models.CASCADE, verbose_name='Тип поручения')
     priority = models.IntegerField(choices=PRIORITIES, verbose_name='Приоритет')
 
-    deadline = models.DateTimeField(blank=True, null=True, verbose_name='Срок исполнения')
+    deadline = models.CharField(max_length=255, blank=True, verbose_name='Срок исполнения')
     is_finished = models.BooleanField(default=False, blank=True, verbose_name='Завершено?')
     finished_at = models.DateTimeField(blank=True, null=True, verbose_name='Фактический срок исполнения')
 

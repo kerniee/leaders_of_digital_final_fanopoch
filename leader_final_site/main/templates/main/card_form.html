@@ -5,14 +5,19 @@
 {% endblock %}
 
 {% block content %}
-    {% load formadmin_filters %}
+    {% load bootstrap_tags %}
+
     <div class="content">
         <div class="row">
-            <form action="#" method="post">
-                {% csrf_token %}
-                {{ form | as_django_admin }}
-                <input type="submit" value="Сохранить">
-            </form>
+            <div class="col-12 card">
+                <form action="#" method="post">
+                    {% csrf_token %}
+                    {{ form | as_bootstrap }}
+                    <div class="w-100 text-center">
+                        <button class="btn btn-lg btn-primary">Сохранить</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}
