@@ -2,10 +2,10 @@ version: '3.7'
 
 services:
   web:
-    build: .
+    build: ./leader_final_site
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/code
+      - ./leader_final_site:/code
     ports:
       - 8000:8000
     env_file:
@@ -24,5 +24,9 @@ services:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+  nlp:
+    build: ./text_processing
+    ports:
+      - 49490:49490
 volumes:
   postgres_data:
