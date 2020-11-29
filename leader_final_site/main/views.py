@@ -5,7 +5,7 @@ from django.shortcuts import render as django_render, redirect
 from django.http import HttpResponse
 from django.shortcuts import render as django_render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from django.views.generic import ListView, CreateView, DetailView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from django_filters.views import FilterView
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as django_login
@@ -166,6 +166,7 @@ class CardsCreateView(CreateView, LoginRequiredMixin):
         'to_users',
         'to_groups'
     )
+    success_url = '/cards'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -198,3 +199,24 @@ class CardDetailView(DetailView, LoginRequiredMixin):
         obj = super().get_object(*args, **kwargs)
         obj.views.add(Member.objects.filter(django_user=self.request.user).first())
         return obj
+
+
+class CardUpdateView(UpdateView, LoginRequiredMixin):
+    model = Card
+    fields = (
+        'header',
+        'cls',
+        'type',
+        'priority',
+        'deadline',
+        'to_users',
+        'to_groups'
+    )
+
+    def get_success_url(self):
+        return f"/cards/{self.object.id}"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['data'] = get_down_menu_data(self.request)
+        return context
