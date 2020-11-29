@@ -84,10 +84,17 @@
 
 .drawer__content a {
     font-size: 3rem;
+    margin-bottom: 1.5rem;
 }
 
 .drawer__title {
     font-size: 3rem;
+}
+
+.drawer__close {
+    background-size: 100% 100%;
+    width: 2rem!important;
+    height: 2rem!important;
 }
 
 

@@ -53,7 +53,7 @@ class Card(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
 
     views = models.ManyToManyField(Worker, related_name='cards_viewed', related_query_name='card_viewed',
-                                   verbose_name='Просмотрено?')
+                                   verbose_name='Просмотрено?', blank=True)
 
     to_users = models.ManyToManyField(Worker, related_name='assigned_cards', related_query_name='assigned_card',
                                       blank=True)

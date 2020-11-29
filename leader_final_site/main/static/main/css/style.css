@@ -17,12 +17,6 @@
     flex-shrink: 0;
 }
 
-.drawer__close {
-    background-size: 100% 100%;
-    width: 2rem!important;
-    height: 2rem!important;
-}
-
 .navbar-toggler {
     font-size: 3rem!important;
     z-index: 10;

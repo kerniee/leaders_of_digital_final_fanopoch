@@ -7,21 +7,24 @@ from django.views.generic import ListView, CreateView, DetailView
 from django_filters.views import FilterView
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as django_login
+from groups_manager.models import Member
 
 from main.models import Card, CardType, Worker
 
 
-def render(*args, **kwargs):
-    if len(args) > 2:
-        args[2]["data"] = get_down_menu_data()
+def render(request, *args, **kwargs):
+    if len(args) > 1:
+        args[1]["data"] = get_down_menu_data(request)
     elif "context" in kwargs:
-        kwargs["context"]["data"] = get_down_menu_data()
+        kwargs["context"]["data"] = get_down_menu_data(request)
     else:
-        kwargs["context"] = {"data": get_down_menu_data()}
-    return django_render(*args, **kwargs)
+        kwargs["context"] = {"data": get_down_menu_data(request)}
+    return django_render(request, *args, **kwargs)
 
 
-def get_down_menu_data():
+def get_down_menu_data(request):
+    u = request.user
+    # TODO:
     data = [
         ("Обязанности", "requests", 22),
         ("Сообщения", "messages", 0),
@@ -105,6 +108,16 @@ class CardsListView(FilterView):
         return queryset
 
 
+class MyCardsView(FilterView):
+    paginate_by = 10
+    template_name = 'main/cards.html'
+    context_object_name = 'cards'
+    filterset_class = CardsFilter
+
+    def get_queryset(self):
+        return Card.objects.filter(creator=Member.objects.filter(django_user=self.request.user).first())
+
+
 class CardsCreateView(CreateView):
     model = Card
     fields = (
@@ -121,7 +134,7 @@ class CardsCreateView(CreateView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         # Add in a QuerySet of all the books
-        context['data'] = get_down_menu_data()
+        context['data'] = get_down_menu_data(self.request)
         return context
 
     def form_valid(self, form):
@@ -138,7 +151,7 @@ class CardDetailView(DetailView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         # Add in a QuerySet of all the books
-        context['data'] = get_down_menu_data()
+        context['data'] = get_down_menu_data(self.request)
         return context
 
     def get_object(self, *args, **kwargs):
