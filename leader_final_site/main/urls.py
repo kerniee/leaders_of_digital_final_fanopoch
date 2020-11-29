@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-from .views import CardsListView, CardsCreateView, CardDetailView, MyCardsView
+from .views import CardsCreateView, CardDetailView, MyCardsView, CardUpdateView
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -15,4 +15,5 @@ urlpatterns = [
     path("cards/new", CardsCreateView.as_view(), name="new_card"),
     path("cards/<int:pk>", CardDetailView.as_view(), name="detail"),
     path("cards/reply", views.process_reply, name="reply"),
+    path("cards/<int:pk>/edit", CardUpdateView.as_view(), name="edit_card")
 ]
