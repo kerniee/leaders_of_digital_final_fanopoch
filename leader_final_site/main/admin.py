@@ -1,26 +1,15 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext, gettext_lazy as _
+from groups_manager.models import Member
 
-from main.models import User, Card, CardType
+from main.models import Card, CardType
 
 
 @admin.register(CardType)
 class CardTypeAdmin(admin.ModelAdmin):
     fields = ['name']
     list_display = ['name']
-
-
-@admin.register(User)
-class CustomUserAdmin(UserAdmin):
-    fieldsets = (
-        (None, {'fields': ('username', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name', 'parent_name', 'email')}),
-        (_('Permissions'), {
-            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
-        }),
-        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
-    )
 
 
 @admin.register(Card)

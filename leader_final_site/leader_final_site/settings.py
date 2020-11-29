@@ -38,10 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters',
-    'formadmin',
     'groups_manager',
     'guardian',
-    'main'
+    'main',
+    'django_forms_bootstrap'
 ]
 
 MIDDLEWARE = [
@@ -134,8 +134,6 @@ AUTHENTICATION_BACKENDS = [
     'guardian.backends.ObjectPermissionBackend'
 ]
 
-AUTH_USER_MODEL = 'main.User'
-
 GROUPS_MANAGER = {
     'AUTH_MODELS_SYNC': True,
     'PERMISSIONS': {
@@ -150,3 +148,5 @@ GROUPS_MANAGER = {
     'USER_USERNAME_PREFIX': '',
     'USER_USERNAME_SUFFIX': '',
 }
+
+LOGIN_URL = '/login'
