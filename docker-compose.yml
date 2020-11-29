@@ -27,6 +27,6 @@ services:
   nlp:
     build: ./text_processing
     ports:
-      - 49490:49490
+      - 8080:49490
 volumes:
   postgres_data:
