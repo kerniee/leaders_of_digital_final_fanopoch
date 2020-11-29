@@ -1,5 +1,6 @@
 import json
-from socketserver import *
+import asyncio
+import websockets
 
 import language_processor as lp
 import string
@@ -21,37 +22,20 @@ keys = [["срочно", "не срочно", "позже", "неважно", "�
 
 # keys = ["немедленно", "быстро", "важно", "срочно", "31", "3381","317", "15:34", "участок", "цех", "механизм", "станок","печь", "мастер", "участок", "работник", "технолог", "инженер по ремонту", "начальник участка", "корпус", "руководитель младшего звена", "руководитель среднего звена"]
 
-# lp.calculate_keys(keys)
 lp.load_keys(keys, "key_vectors.json")
 
-host = 'localhost'
-port = 49490
-addr = (host, port)
-class service(StreamRequestHandler):
-    def handle(self):
-        while True:
-            in_string = self.rfile.readline()
-            in_string = in_string.decode()
-            if in_string:
-                res = lp.keys_grouped_check(in_string)
-                self.request.sendall((json.dumps(res) + "\n").encode("utf-8"))
-                print("Приоритет: " + res[0])
-                print("Время: " + res[1])
-                print("Тип: " + res[2])
-                print("Получатель: " + res[3])
-                print("Место: " + res[4])
-            else:
-                break
 
-class ThreadedTCPServer(TCPServer):
-    pass
+def handle(in_string):
+    if in_string:
+        res = lp.keys_grouped_check(in_string)
+        return json.dumps(res)
 
-ThreadedTCPServer.allow_reuse_address = True
-server = ThreadedTCPServer(addr, service)
-print("Server is listening!")
-server.serve_forever()
-print("Stopping the server...")
-server.server_close()
-server.shutdown()
-server.socket.close()
-print("Server is stopped")
+
+async def server(websocket, path):
+    async for message in websocket:
+        await websocket.send(handle(message))
+
+
+asyncio.get_event_loop().run_until_complete(
+    websockets.serve(server, '0.0.0.0', 49490))
+asyncio.get_event_loop().run_forever()
