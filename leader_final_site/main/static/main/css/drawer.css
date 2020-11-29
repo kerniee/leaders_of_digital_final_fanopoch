@@ -43,6 +43,12 @@
     height: 15px;
 }
 
+.drawer__close {
+    background-size: 100% 100%;
+    width: 2rem !important;
+    height: 2rem !important;
+}
+
 .drawer__wrapper {
     position: fixed;
     top: 0;

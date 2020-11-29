@@ -11,7 +11,12 @@ from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as django_login
 from groups_manager.models import Member
 
-from main.models import Card, CardType
+from main.models import Card, CardType, Reply
+
+
+def filter_cards_of_current_user(request):
+    return Card.objects.filter(to_users__django_user=request.user) \
+           | Card.objects.filter(to_groups__group_members__django_user=request.user)
 
 
 def render(request, *args, **kwargs):
@@ -25,8 +30,7 @@ def render(request, *args, **kwargs):
 
 
 def get_down_menu_data(request):
-    total_cards = Card.objects.filter(to_users__django_user=request.user) \
-                  | Card.objects.filter(to_groups__group_members__django_user=request.user)
+    total_cards = filter_cards_of_current_user(request)
     viewed_cars = total_cards.filter(views__django_user=request.user)
     data = [
         ("Обязанности", "requests",
@@ -46,21 +50,21 @@ def index(request):
 
 @login_required
 def requests(request):
-    cards = Card.objects.filter(cls=1)
+    cards = filter_cards_of_current_user(request).filter(cls=1)
     f = CardsFilter(request.GET, queryset=cards)
     return render(request, "main/requests.html", {'filter': f})
 
 
 @login_required
 def messages(request):
-    cards = Card.objects.filter(cls=2)
+    cards = filter_cards_of_current_user(request).filter(cls=2)
     f = CardsFilter(request.GET, queryset=cards)
     return render(request, "main/messages.html", {'filter': f})
 
 
 @login_required
 def missions(request):
-    cards = Card.objects.filter(cls=3)
+    cards = filter_cards_of_current_user(request).filter(cls=3)
     f = CardsFilter(request.GET, queryset=cards)
     return render(request, "main/missions.html", {'filter': f})
 
@@ -84,6 +88,17 @@ def process_login(request):
         return redirect("index")
     else:
         return redirect("login")
+
+
+def process_reply(request):
+    if "smartTaskText" in request.POST:
+        text = request.POST["smartTaskText"]
+    else:
+        text = ""
+    card_id = request.POST["card-id"]
+    r = Reply(text=text, card=Card.objects.get(pk=card_id), member=request.user.groups_manager_member_set.first())
+    r.save()
+    return redirect(f'/cards/{card_id}')
 
 
 class CardsFilter(django_filters.FilterSet):
@@ -113,6 +128,11 @@ class CardsListView(FilterView, LoginRequiredMixin):
     context_object_name = 'cards'
     filterset_class = CardsFilter
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['data'] = get_down_menu_data(self.request)
+        return context
+
     def get_queryset(self):
         queryset = Card.objects.filter(to_users__django_user=self.request.user) \
                    | Card.objects.filter(to_groups__group_members__django_user=self.request.user)
@@ -125,6 +145,12 @@ class MyCardsView(FilterView):
     context_object_name = 'cards'
     filterset_class = CardsFilter
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['data'] = get_down_menu_data(self.request)
+        context['nav_title'] = "Созданные поручения"
+        return context
+
     def get_queryset(self):
         return Card.objects.filter(creator=Member.objects.filter(django_user=self.request.user).first())
 
@@ -133,6 +159,7 @@ class CardsCreateView(CreateView, LoginRequiredMixin):
     model = Card
     fields = (
         'header',
+        'cls',
         'type',
         'priority',
         'deadline',
@@ -141,9 +168,7 @@ class CardsCreateView(CreateView, LoginRequiredMixin):
     )
 
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
         context['data'] = get_down_menu_data(self.request)
         return context
 
@@ -162,6 +187,11 @@ class CardDetailView(DetailView, LoginRequiredMixin):
         context = super().get_context_data(**kwargs)
         # Add in a QuerySet of all the books
         context['data'] = get_down_menu_data(self.request)
+        context['reply'] = Reply.objects.filter(
+            member=self.request.user.groups_manager_member_set.first()
+        ).filter(
+            card=super().get_object()
+        ).first()
         return context
 
     def get_object(self, *args, **kwargs):

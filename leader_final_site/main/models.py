@@ -56,6 +56,7 @@ class Card(models.Model):
 
 
 class Reply(models.Model):
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
     card = models.ForeignKey(Card, on_delete=models.CASCADE)
     text = models.TextField()
 

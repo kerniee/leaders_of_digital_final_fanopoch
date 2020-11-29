@@ -55,7 +55,9 @@
     <nav class="navbar fixed-bottom navbar-light bg-light" style="min-height: 150px">
         {% for name, url, counter in data %}
             <div class="col-4">
-                <a href="/{{ url }}" class="btn btn-info btn-super-lg navbar-btn">{{ name }}</a>
+                <a href="/{{ url }}" class="btn btn-info btn-super-lg navbar-btn {% if url in request.path %}disabled{% endif %}"
+                   role="button"
+                >{{ name }}</a>
                 {% if counter != 0 %}
                     <span class="counter counter-lg">{{ counter }}</span>
                 {% endif %}
