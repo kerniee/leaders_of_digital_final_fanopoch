@@ -30,7 +30,7 @@
             {% endif %}
             {% for card in filter.qs %}
 
-                <a style="text-decoration:none;" href='/' class="col-md-12 mb-2">
+                <a style="text-decoration:none;" href='/' class="col-12 mb-2">
                     <div class="card m-1">
                         <div class="card-footer">
                             <svg style="margin-right: 2px" width="1em" height="1em" viewBox="0 0 16 16"
@@ -78,8 +78,4 @@
             </ul>
         {% endif %}
     </div>
-{% endblock %}
-
-{% block js %} {% load static %}
-    <script src="{% static 'main/js/filter.js' %}"></script>
 {% endblock %}
