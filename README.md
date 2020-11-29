@@ -8,3 +8,5 @@ cp .env.example .env
 docker-compose up
 ```
 Сайт будет доступен по адресу http://127.0.0.1:8000
+
+Можно зайти на /admin gj 

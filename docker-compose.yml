@@ -3,7 +3,7 @@ version: '3.7'
 services:
   web:
     build: ./leader_final_site
-    command: python manage.py runserver 0.0.0.0:8000
+    command: sh run.sh
     volumes:
       - ./leader_final_site:/code
     ports:
